@@ -1,48 +1,61 @@
-Guard Logic Challenge – C++
-A simple decision system for a secured facility with three doors, implemented in C++.
+Guard Logic Challenge
 
-Problem Statement
-You are designing a decision system for a secured facility with three doors:
-DoorOutcomeDoor 1Safe ExitDoor 2TrapDoor 3Back to Starting Point
-A guard logic function decides which door to open based on given conditions.
+A C++ program that simulates a decision system for a secured facility. Based on a visitor's credentials and the facility's current state, the system directs them to one of three doors.
+
+How it works
+
+The guard function takes three inputs:
+
+- hasKeycard – does the visitor have a keycard?
+- isAuthorized – are they on the approved list?
+- alarmActive – is the facility alarm currently on?
+
+Based on these, it picks one of three doors:
+
+- Door 1 – Safe Exit
+- Door 2 – Trap
+- Door 3 – Back to starting point
+
+The decision follows this logic:
+
+1. If the visitor is authorized, has a keycard, and no alarm is going off → Safe Exit
+2. If the alarm is active → Trap (no exceptions)
+3. If they have a keycard but aren't authorized → Back to Start
+4. Anything else → Trap
+
+Project structure
+
+```
+guard_logic.cpp   – main source file
+README.md         – this file
+```
+
+Inside the source file:
+
+- enum class Door – defines the three door outcomes
+- doorName() – returns a readable label for each door
+- guardDecision() – contains the core logic
+- runScenario() – prints the result for a given set of inputs
+- main() – runs six test cases
+
+Running the program
 
 
- Decision Rules
-Rules are evaluated in priority order:
-PriorityConditionResult1Authorized + Keycard + No Alarm Door 1 – Safe Exit2Alarm is Active (any other flags) Door 2 – Trap3Has Keycard but NOT Authorized Door 3 – Back to Start4Everything else (fail-safe)
-Door 2 – Trap
-
-Code Structure
-guard_logic.cpp
-│
-├── enum class Door          → Type-safe door outcomes (SAFE_EXIT, TRAP, START_POINT)
-├── doorName()               → Converts Door enum to a readable string
-├── guardDecision()          → Core logic function — takes 3 bools, returns a Door
-├── runScenario()            → Helper to print a labeled test case and its result
-└── main()                   → Runs 6 scenarios covering all key cases
-
- Test Scenarios & Output
-ScenarioKeycardAlarmAuthorizedResultAll clear – authorised visitor  Door 1 – Safe ExitAlarm triggered – authorised
-Door 2 – TrapAlarm triggered – no keycard 
-Door 2 – TrapKeycard present, not authorised 
-Door 3 – Back to StartNo keycard, not authorised
-Door 2 – TrapAuthorised but no keycard
-Door 2 – Trap
-
- How to Compile & Run
-Make sure you have g++ installed, then run:
-bashg++ -std=c++17 -Wall -o guard_logic guard_logic.cpp
+g++ -std=c++17 -Wall -o guard_logic guard_logic.cpp
 ./guard_logic
-Expected Output
 
 
-Scenario : All clear – authorised visitor
-  Keycard   : Yes
-  Alarm     : No
-  Authorized: Yes
-  Decision: Door 1 – Safe Exit
+Test cases
 
-Requirements
+| Keycard | Alarm | Authorized | Result |
+|---------|-------|------------|--------|
+| Yes | No | Yes | Safe Exit |
+| Yes | Yes | Yes | Trap |
+| No | Yes | No | Trap |
+| Yes | No | No | Back to Start |
+| No | No | No | Trap |
+| No | No | Yes | Trap |
 
-C++17 or later
-g++ compiler (GCC) or any standard C++ compile
+Notes
+
+The system defaults to Trap in any unclear or uncovered case. This is intentional — when in doubt, the safest option for a secured facility is to not let someone through.
