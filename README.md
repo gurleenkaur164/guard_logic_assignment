@@ -25,10 +25,10 @@ The decision follows this logic:
 
 Project structure
 
-```
+
 guard_logic.cpp   – main source file
 README.md         – this file
-```
+
 
 Inside the source file:
 
@@ -40,21 +40,29 @@ Inside the source file:
 
 Running the program
 
-
 g++ -std=c++17 -Wall -o guard_logic guard_logic.cpp
 ./guard_logic
 
 
 Test cases
 
-| Keycard | Alarm | Authorized | Result |
-|---------|-------|------------|--------|
-| Yes | No | Yes | Safe Exit |
-| Yes | Yes | Yes | Trap |
-| No | Yes | No | Trap |
-| Yes | No | No | Back to Start |
-| No | No | No | Trap |
-| No | No | Yes | Trap |
+Case 1 – Normal authorized entry
+Visitor has a keycard, is authorized, and no alarm is active. Expected result: Safe Exit.
+
+Case 2 – Alarm goes off during authorized entry
+Visitor has a keycard and is authorized, but the alarm is active. Expected result: Trap.
+
+Case 3 – Alarm with no credentials
+No keycard, not authorized, alarm is active. Expected result: Trap.
+
+Case 4 – Keycard but not on the list
+Visitor has a keycard but is not authorized, no alarm. Expected result: Back to Start.
+
+Case 5 – No credentials at all
+No keycard, not authorized, no alarm. Expected result: Trap.
+
+Case 6 – Authorized but forgot keycard
+Visitor is authorized but has no keycard, no alarm. Expected result: Trap.
 
 Notes
 
